@@ -94,6 +94,14 @@ module boris_boarman::boris_boarman_tests {
             ts::return_shared(proposals);
         };
 
+        // Verify USER2 received the funds
+        ts::next_tx(&mut scenario, USER2);
+        {
+            let coin = ts::take_from_sender<coin::Coin<SUI>>(&scenario);
+            assert!(coin::value(&coin) == 1000, 0);
+            ts::return_to_sender(&scenario, coin);
+        };
+
         ts::end(scenario);
     }
 }
